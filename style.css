@@ -1,4 +1,12 @@
 #canvas{
+    position: absolute;
     margin: 40px;
     background-color: gray;
+    z-index: 0;
+}
+#overlay{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 1;
 }
