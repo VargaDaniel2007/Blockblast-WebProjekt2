@@ -1,7 +1,18 @@
+import {Alakzat, Blokk} from "./alakzat.js"
+
+
 //grid
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+
+const L = new Alakzat;
+L.Space = [[new Blokk(false),new Blokk(false),new Blokk(true)],
+            [new Blokk(true),new Blokk(true),new Blokk(true)]]
+console.log(L)
+
+
+
 
 let rectPosX = 50;
 let rectPosY = 50;
@@ -79,40 +90,79 @@ let wrectPosX = 70;
 let wrectPosY = 70;
 let wrectW = 70;
 let wrectH = 70;
-let drag = false;
+let dragged = undefined;
 let wrectOffsetX = 0;
 let wrectOffsetY = 0;
-ctx2.fillRect(wrectPosX, wrectPosY, wrectW, wrectH);
+//ctx2.fillRect(wrectPosX, wrectPosY, wrectW, wrectH);
 
 document.getElementById('overlay').addEventListener('mousedown', (event) => {
     // console.log(event)
     // console.log(event.offsetX);
     // console.log(event.offsetY);
 
-    if(event.offsetX > wrectPosX && event.offsetX < wrectPosX + wrectW)
+    //Kocka
+    L.Space.forEach(row => {
+        row.forEach(blokk =>{
+            if (blokk.Bool == true){
+                if (blokk.X < event.offsetX && blokk.X + 70 > event.offsetX){
+                    if (blokk.Y < event.offsetY && blokk.Y + 70 > event.offsetY){
+                        dragged = L;
+                        L.Offset.X = event.offsetX - L.Space[0][0].X;
+                        L.Offset.Y = event.offsetY - L.Space[0][0].Y;
+                        console.log(L.Space[0][0].X)
+                    }
+                }
+            }
+        })
+    });
+
+    /*
+    if(event.offsetX > wrectPosX && event.offsetX < wrectPosX + wrectW){
         if(event.offsetY > wrectPosY && event.offsetY < wrectPosY + wrectH){
             drag = true;
             wrectOffsetX = event.offsetX - wrectPosX;
             wrectOffsetY = event.offsetY - wrectPosY;
         }
+    }
+    */
 
 });
 document.getElementById('overlay').addEventListener('mousemove', (event) => {
-    if(drag){
+    if(dragged != undefined){
+        /*
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         ctx2.fillRect(event.offsetX - wrectOffsetX, event.offsetY - wrectOffsetY, wrectW, wrectH)
         wrectPosX = event.offsetX - wrectOffsetX;
         wrectPosY = event.offsetY - wrectOffsetY;
+        let kezdoX = 217;
+        let kezdoY = 617;
+        */
+        ctx2.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i< dragged.Space.length; i++){
+            for (let j = 0; j < dragged.Space[i].length; j++){
+                if (dragged.Space[i][j].Bool == true){
+                    ctx2.fillRect( event.offsetX -  dragged.Offset.X + j*70, event.offsetY - dragged.Offset.Y + i * 70, 70, 70)
+                    dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
+                    dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
+                }
+                console.log(L.Space[0][2].Y)
+            }
+        
+        }
+        //console.log(L.Space)
     }
 });
+
 
 
 window.addEventListener('mouseup', (event) => {
     // console.log(event)
     // console.log(event.offsetX);
     // console.log(event.offsetY);
-    if(drag){
-        drag = false;
+    if(dragged != undefined){
+        dragged.Offset.X = 0;
+        dragged.Offset.Y = 0;
+        dragged = undefined;
         drop(event);
 
     }
@@ -142,7 +192,6 @@ function generate(){
             field[i][j] = false;
         }
     }
-    console.log(field)
 
 }
 
@@ -162,7 +211,7 @@ function drop(ev) {
         ctx.fillStyle = "black"
         ctx.fillRect(droppedX *70, droppedY * 70, 70, 70);
 
-        console.log(field)
+        //console.log(field)
 
 
         for(let i = 0; i < 8; i++){
@@ -190,7 +239,7 @@ function drop(ev) {
 
         }
         
-        console.log(oszlop)
+        //console.log(oszlop)
         //törlés
         for (let i = 0; i < index.length; i++){
             ctx.clearRect(0, index[i]*70, canvas.width, 70);
@@ -287,3 +336,20 @@ function drop(ev) {
 
 }
   
+let kezdoX = 217;
+let kezdoY = 617;
+
+for (let i = 0; i< L.Space.length; i++){
+    for (let j = 0; j < L.Space[i].length; j++){
+        if (L.Space[i][j].Bool == true){
+            ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
+            L.Space[i][j].X = kezdoX + j *70;
+            L.Space[i][j].Y = kezdoY + i * 70;
+        }
+        else{
+            L.Space[i][j].X = kezdoX + j *70;
+            L.Space[i][j].Y = kezdoY + i * 70;
+        }
+    }
+
+}
