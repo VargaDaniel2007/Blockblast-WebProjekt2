@@ -145,6 +145,10 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
                     dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
                     dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
                 }
+                else{
+                    dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
+                    dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
+                }
                 console.log(L.Space[0][2].Y)
             }
         
