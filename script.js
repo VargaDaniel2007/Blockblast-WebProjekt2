@@ -109,7 +109,7 @@ document.getElementById('overlay').addEventListener('mousedown', (event) => {
                         dragged = L;
                         L.Offset.X = event.offsetX - L.Space[0][0].X;
                         L.Offset.Y = event.offsetY - L.Space[0][0].Y;
-                        console.log(L.Space[0][0].X)
+                        // console.log(L.Space[0][0].X)
                     }
                 }
             }
@@ -149,7 +149,7 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
                     dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
                     dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
                 }
-                console.log(L.Space[0][2].Y)
+                // console.log(L.Space[0][2].Y)
             }
         
         }
@@ -166,8 +166,8 @@ window.addEventListener('mouseup', (event) => {
     if(dragged != undefined){
         dragged.Offset.X = 0;
         dragged.Offset.Y = 0;
+        drop(event, dragged);
         dragged = undefined;
-        drop(event);
 
     }
 
@@ -201,7 +201,7 @@ function generate(){
 
 //holder ==> mozgatott objekt
 
-function drop(ev) {
+function drop(ev, dragged) {
     if (ev.offsetY < 561){
         let beszinezve = 0;
         let oszlopBeszinezve = 0;
@@ -210,10 +210,51 @@ function drop(ev) {
 
         let droppedX = Math.floor(ev.offsetX /70);
         let droppedY = Math.floor(ev.offsetY /70);
-        field[droppedY][droppedX] = true;
-        console.log(droppedX, droppedY)
+        // console.log(droppedX, droppedY);
+        //field[droppedY][droppedX] = true;
+        
+        //Alakzat hely ellenőrzés
+        let coorOffset = dragged.HolFog(ev.offsetX, ev.offsetY);
+        // console.log(coorOffset);
+        if(droppedX - coorOffset.X >= 0 && droppedY - coorOffset.Y >= 0){
+            droppedX -= coorOffset.X;
+            droppedY -= coorOffset.Y;
+
+            //Alakzat üres helyek ellenőrzés
+            let dSpace = dragged.Space;
+            let szabad = true;
+            // console.log(field);
+            for(let bY = 0; bY < dSpace.length; bY++){
+                for(let bX = 0; bX < dSpace[bY].length; bX++){
+                    if(dSpace[bY][bX].Bool && field[droppedY + bY][droppedX + bX]){
+                        szabad = false;
+                        console.log(droppedX, droppedY);
+                        console.log(coorOffset);
+                        console.log(field);
+                        console.log(droppedX + bX, droppedY + bY)
+                    }
+                }
+            }
+            if(szabad){
+                for(let bY = 0; bY < dSpace.length; bY++){
+                    for(let bX = 0; bX < dSpace[bY].length; bX++){
+                        if(dSpace[bY][bX].Bool){
+                            field[droppedY + bY][droppedX + bX] = true;
+                            ctx.fillRect((droppedX + bX )*70, (droppedY + bY) * 70, 70, 70);
+                        }
+                    }
+                }   
+            }
+            console.log(field);
+
+        }
+        console.log(droppedX, droppedY);
+
+
+
+
         ctx.fillStyle = "black"
-        ctx.fillRect(droppedX *70, droppedY * 70, 70, 70);
+        //ctx.fillRect(droppedX *70, droppedY * 70, 70, 70);
 
         //console.log(field)
 
