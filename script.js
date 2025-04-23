@@ -7,8 +7,8 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const L = new Alakzat;
-L.Space = [[new Blokk(false),new Blokk(false),new Blokk(true)],
-            [new Blokk(true),new Blokk(true),new Blokk(true)]]
+L.Space = [[new Blokk(false),new Blokk(true),new Blokk(true)],
+            [new Blokk(true),new Blokk(true),new Blokk(false)]]
 console.log(L)
 
 
@@ -215,7 +215,6 @@ function drop(ev, dragged) {
         
         //Alakzat hely ellenőrzés
         let coorOffset = dragged.HolFog(ev.offsetX, ev.offsetY);
-        // console.log(coorOffset);
         if(droppedX - coorOffset.X >= 0 && droppedY - coorOffset.Y >= 0){
             droppedX -= coorOffset.X;
             droppedY -= coorOffset.Y;
@@ -223,15 +222,10 @@ function drop(ev, dragged) {
             //Alakzat üres helyek ellenőrzés
             let dSpace = dragged.Space;
             let szabad = true;
-            // console.log(field);
             for(let bY = 0; bY < dSpace.length; bY++){
                 for(let bX = 0; bX < dSpace[bY].length; bX++){
                     if(dSpace[bY][bX].Bool && field[droppedY + bY][droppedX + bX]){
                         szabad = false;
-                        console.log(droppedX, droppedY);
-                        console.log(coorOffset);
-                        console.log(field);
-                        console.log(droppedX + bX, droppedY + bY)
                     }
                 }
             }
@@ -245,10 +239,7 @@ function drop(ev, dragged) {
                     }
                 }   
             }
-            console.log(field);
-
         }
-        console.log(droppedX, droppedY);
 
 
 
@@ -379,8 +370,48 @@ function drop(ev, dragged) {
         */
     }
 
+
+    //Van-e lehetséges opció
+    if(GameEndCheck(dragged)){
+        alert("Nincs lehetséges lépés")
+    }
 }
   
+/**
+ * @param {Alakzat} object 
+ */
+function GameEndCheck(object){
+    for(let y = 0; y < field.length; y++){
+        for(let x = 0; x < field[y].length; x++){
+            if(BlokkCheck(x, y, object)){
+                return false;     //Van lehetséges lépés
+            }
+        }
+    }
+    return true;       //Nincs lehetséges lépés
+}
+
+/**
+ * @param {Alakzat} object 
+ */
+function BlokkCheck(x, y, object){
+    for(let bY = 0; bY < object.Space.length; bY++){
+        for(let bX = 0; bX < object.Space[bY].length; bX++){
+            // console.log("bX:", bX, "bY", bY)
+            // console.log("xx", x + bX < 8)
+            if(y + bY >= 8 || x + bX >= 8){
+                return false;
+            }
+            if(object.Space[bY][bX].Bool){
+                if(field[y + bY][x + bX]){
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 let kezdoX = 217;
 let kezdoY = 617;
 
