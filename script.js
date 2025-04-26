@@ -11,90 +11,87 @@ const L = new Alakzat([[new Blokk(false),new Blokk(false),new Blokk(true)],
 
 
 const shapes = [
-    L,              //L
-    new Alakzat(    //L állított
+    [[new Blokk(false),new Blokk(false),new Blokk(true)],
+     [new Blokk(true),new Blokk(true),new Blokk(true)]],              //L
+    //L állított
         [[new Blokk(true), new Blokk(false)],
          [new Blokk(true), new Blokk(false)],
-         [new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //L tükör
+         [new Blokk(true), new Blokk(true)]],
+
+    //L tükör
         [[new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //L tükör állított
+         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+    //L tükör állított
         [[new Blokk(false), new Blokk(true)],
          [new Blokk(false), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]]
-    ),
+         [new Blokk(true), new Blokk(true)]],
 
-    new Alakzat(    //Z
+    //Z
         [[new Blokk(false), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(false)]]
-    ),
-    new Alakzat(    //Z állított
+         [new Blokk(true), new Blokk(true), new Blokk(false)]],
+
+    //Z állított
         [[new Blokk(true), new Blokk(false)],
          [new Blokk(true), new Blokk(true)],
-         [new Blokk(false), new Blokk(true)]]
-    ),
-    new Alakzat(    //Z tükör
+         [new Blokk(false), new Blokk(true)]],
+
+    //Z tükör
         [[new Blokk(true), new Blokk(true), new Blokk(false)],
-         [new Blokk(false), new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //Z tükör állított
+         [new Blokk(false), new Blokk(true), new Blokk(true)]],
+
+    //Z tükör állított
         [[new Blokk(false), new Blokk(true)],
          [new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(false)]]
-    ),
+         [new Blokk(true), new Blokk(false)]],
 
-    new Alakzat(    //I
+    //I
         [[new Blokk(true)],
          [new Blokk(true)],
-         [new Blokk(true)]]
-    ),
-    new Alakzat(    //I fektetett
-        [[new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
+         [new Blokk(true)]],
 
-    new Alakzat(    //Négyzet
+    //I fektetett
+        [[new Blokk(true), new Blokk(true), new Blokk(true)]],
+
+    //Négyzet
         [[new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //Nagy négyzet
+         [new Blokk(true), new Blokk(true)]],
+
+    //Nagy négyzet
         [[new Blokk(true), new Blokk(true), new Blokk(true)],
          [new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
+         [new Blokk(true), new Blokk(true), new Blokk(true)]],
 
-    new Alakzat(    //Téglalap
+
+    //Téglalap
         [[new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //Téglalap állított
+         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+
+    //Téglalap állított
         [[new Blokk(true), new Blokk(true)],
          [new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]]
-    ),
+         [new Blokk(true), new Blokk(true)]],
 
-    new Alakzat(    //Nagy L
+
+    //Nagy L
         [[new Blokk(true), new Blokk(false), new Blokk(false)],
          [new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //Nagy L tükör
+         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+
+    //Nagy L tükör
         [[new Blokk(false), new Blokk(false), new Blokk(true)],
          [new Blokk(false), new Blokk(false), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]]
-    ),
-    new Alakzat(    //Nagy L fejjel lefelé
+         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+
+    //Nagy L fejjel lefelé
         [[new Blokk(true), new Blokk(true), new Blokk(true)],
          [new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(false), new Blokk(false)]]
-    ),
-    new Alakzat(    //Nagy L fejjel lefelé tükör
+         [new Blokk(true), new Blokk(false), new Blokk(false)]],
+
+    //Nagy L fejjel lefelé tükör
         [[new Blokk(true), new Blokk(true), new Blokk(true)],
          [new Blokk(false), new Blokk(false), new Blokk(true)],
          [new Blokk(false), new Blokk(false), new Blokk(true)]]
-    )
+
 ];
 
 console.log(L)
@@ -278,8 +275,8 @@ window.addEventListener('mouseup', (event) => {
     // console.log(event.offsetY);
     if(dragged != undefined){
         let alakzat = aktivshapes[dragged];
-        alakzat.Offset.X = 0;
-        alakzat.Offset.Y = 0;
+        // alakzat.Offset.X = 0;
+        // alakzat.Offset.Y = 0;
         drop(event, alakzat, dragged);
         // aktivshapes[dragged] = undefined;
         dragged = undefined;
@@ -318,7 +315,7 @@ function generate(){
 function aktivshapesFill(){
     for(let i = 0; i < 3; i++){
         let index = Math.floor(Math.random() * shapes.length);
-        aktivshapes[i] = shapes[index];
+        aktivshapes[i] = new Alakzat(shapes[1]);
     }
 }
 
@@ -348,6 +345,9 @@ function drop(ev, dragged, draggedIndex) {
         //Alakzat hely ellenőrzés
         let coorOffset = dragged.HolFog(ev.offsetX, ev.offsetY);
         console.log(coorOffset);
+        if(coorOffset == null){
+            coorOffset = {X: 0, Y: 0};
+        }
         if(droppedX - coorOffset.X >= 0 && droppedY - coorOffset.Y >= 0){
             droppedX -= coorOffset.X;
             droppedY -= coorOffset.Y;
