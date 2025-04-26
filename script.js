@@ -6,10 +6,107 @@ import {Alakzat, Blokk} from "./alakzat.js"
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const L = new Alakzat;
-L.Space = [[new Blokk(false),new Blokk(true),new Blokk(true)],
-            [new Blokk(true),new Blokk(true),new Blokk(false)]]
+const L = new Alakzat([[new Blokk(false),new Blokk(false),new Blokk(true)],
+[new Blokk(true),new Blokk(true),new Blokk(true)]]);
+
+
+const shapes = [
+    L,              //L
+    new Alakzat(    //L állított
+        [[new Blokk(true), new Blokk(false)],
+         [new Blokk(true), new Blokk(false)],
+         [new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //L tükör
+        [[new Blokk(true), new Blokk(false), new Blokk(false)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //L tükör állított
+        [[new Blokk(false), new Blokk(true)],
+         [new Blokk(false), new Blokk(true)],
+         [new Blokk(true), new Blokk(true)]]
+    ),
+
+    new Alakzat(    //Z
+        [[new Blokk(false), new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true), new Blokk(false)]]
+    ),
+    new Alakzat(    //Z állított
+        [[new Blokk(true), new Blokk(false)],
+         [new Blokk(true), new Blokk(true)],
+         [new Blokk(false), new Blokk(true)]]
+    ),
+    new Alakzat(    //Z tükör
+        [[new Blokk(true), new Blokk(true), new Blokk(false)],
+         [new Blokk(false), new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //Z tükör állított
+        [[new Blokk(false), new Blokk(true)],
+         [new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(false)]]
+    ),
+
+    new Alakzat(    //I
+        [[new Blokk(true)],
+         [new Blokk(true)],
+         [new Blokk(true)]]
+    ),
+    new Alakzat(    //I fektetett
+        [[new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+
+    new Alakzat(    //Négyzet
+        [[new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //Nagy négyzet
+        [[new Blokk(true), new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+
+    new Alakzat(    //Téglalap
+        [[new Blokk(true), new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //Téglalap állított
+        [[new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(true)]]
+    ),
+
+    new Alakzat(    //Nagy L
+        [[new Blokk(true), new Blokk(false), new Blokk(false)],
+         [new Blokk(true), new Blokk(false), new Blokk(false)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //Nagy L tükör
+        [[new Blokk(false), new Blokk(false), new Blokk(true)],
+         [new Blokk(false), new Blokk(false), new Blokk(true)],
+         [new Blokk(true), new Blokk(true), new Blokk(true)]]
+    ),
+    new Alakzat(    //Nagy L fejjel lefelé
+        [[new Blokk(true), new Blokk(true), new Blokk(true)],
+         [new Blokk(true), new Blokk(false), new Blokk(false)],
+         [new Blokk(true), new Blokk(false), new Blokk(false)]]
+    ),
+    new Alakzat(    //Nagy L fejjel lefelé tükör
+        [[new Blokk(true), new Blokk(true), new Blokk(true)],
+         [new Blokk(false), new Blokk(false), new Blokk(true)],
+         [new Blokk(false), new Blokk(false), new Blokk(true)]]
+    )
+];
+
 console.log(L)
+const coor = {X: 0, Y: 0,
+    setCoor: function(x, y){
+        this.X = x,
+        this.Y = y
+}};
+
+const aktivShapeCoor = [new coor.setCoor(10, 585), new coor.setCoor(200, 585), new coor.setCoor(500, 585)]; //TODO: Megoldás a kicsúszásra
+
+const aktivshapes = [undefined, undefined, undefined];
 
 
 
@@ -58,17 +155,19 @@ canvas.addEventListener('click', (event) => {
     // console.log(event.offsetX);
     // console.log(event.offsetY);
 
-});
+// });
 */
 //ctx.fillStyle = "red";
 //ctx.fillRect(50, 50, 50, 50);
-
-
 const ctx2 = document.getElementById('overlay').getContext('2d');
+
 
 window.addEventListener("load", () =>{
     drawChart();
     generate();
+    aktivshapesFill();
+    console.log(aktivshapes)
+    aktivshapesDraw();
 })
 
 
@@ -101,20 +200,25 @@ document.getElementById('overlay').addEventListener('mousedown', (event) => {
     // console.log(event.offsetY);
 
     //Kocka
-    L.Space.forEach(row => {
-        row.forEach(blokk =>{
-            if (blokk.Bool == true){
-                if (blokk.X < event.offsetX && blokk.X + 70 > event.offsetX){
-                    if (blokk.Y < event.offsetY && blokk.Y + 70 > event.offsetY){
-                        dragged = L;
-                        L.Offset.X = event.offsetX - L.Space[0][0].X;
-                        L.Offset.Y = event.offsetY - L.Space[0][0].Y;
-                        // console.log(L.Space[0][0].X)
+    for(let i = 0; i < aktivshapes.length; i++){
+        const alakzat = aktivshapes[i];
+        if(alakzat != undefined){
+            alakzat.Space.forEach(row => {
+                row.forEach(blokk =>{
+                    if (blokk.Bool == true){
+                        if (blokk.X < event.offsetX && blokk.X + 70 > event.offsetX){
+                            if (blokk.Y < event.offsetY && blokk.Y + 70 > event.offsetY){
+                                dragged = i;
+                                alakzat.Offset.X = event.offsetX - alakzat.Space[0][0].X;
+                                alakzat.Offset.Y = event.offsetY - alakzat.Space[0][0].Y;
+                                // console.log(L.Space[0][0].X)
+                            }
+                        }
                     }
-                }
-            }
-        })
-    });
+                })
+            });
+        }
+    };
 
     /*
     if(event.offsetX > wrectPosX && event.offsetX < wrectPosX + wrectW){
@@ -138,21 +242,30 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
         let kezdoY = 617;
         */
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i< dragged.Space.length; i++){
-            for (let j = 0; j < dragged.Space[i].length; j++){
-                if (dragged.Space[i][j].Bool == true){
-                    ctx2.fillRect( event.offsetX -  dragged.Offset.X + j*70, event.offsetY - dragged.Offset.Y + i * 70, 70, 70)
-                    dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
-                    dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
+        let alakzat = aktivshapes[dragged];
+        alakzat.Rajz(event.offsetX -  alakzat.Offset.X, event.offsetY -  alakzat.Offset.Y, ctx2)
+        /*
+        for (let i = 0; i< alakzat.Space.length; i++){
+            for (let j = 0; j < alakzat.Space[i].length; j++){
+                if (alakzat.Space[i][j].Bool == true){
+                    ctx2.fillRect( event.offsetX -  alakzat.Offset.X + j*70, event.offsetY - alakzat.Offset.Y + i * 70, 70, 70)
+                    alakzat.Space[i][j].X = event.offsetX -  alakzat.Offset.X + j *70;
+                    alakzat.Space[i][j].Y = event.offsetY - alakzat.Offset.Y + i * 70;
                 }
                 else{
-                    dragged.Space[i][j].X = event.offsetX -  dragged.Offset.X + j *70;
-                    dragged.Space[i][j].Y = event.offsetY - dragged.Offset.Y + i * 70;
+                    alakzat.Space[i][j].X = event.offsetX -  alakzat.Offset.X + j *70;
+                    alakzat.Space[i][j].Y = event.offsetY - alakzat.Offset.Y + i * 70;
                 }
                 // console.log(L.Space[0][2].Y)
             }
-        
+        */
+        // }
+        for(let i = 0; i < aktivshapes.length; i++){
+            if(i != dragged && aktivshapes[i] != undefined){
+                aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
+            }
         }
+
         //console.log(L.Space)
     }
 });
@@ -164,11 +277,14 @@ window.addEventListener('mouseup', (event) => {
     // console.log(event.offsetX);
     // console.log(event.offsetY);
     if(dragged != undefined){
-        dragged.Offset.X = 0;
-        dragged.Offset.Y = 0;
-        drop(event, dragged);
+        let alakzat = aktivshapes[dragged];
+        alakzat.Offset.X = 0;
+        alakzat.Offset.Y = 0;
+        drop(event, alakzat, dragged);
+        // aktivshapes[dragged] = undefined;
         dragged = undefined;
-
+        ctx2.clearRect(0, 0, canvas.width, canvas.height);
+        aktivshapesDraw();
     }
 
 });
@@ -199,9 +315,25 @@ function generate(){
 
 }
 
+function aktivshapesFill(){
+    for(let i = 0; i < 3; i++){
+        let index = Math.floor(Math.random() * shapes.length);
+        aktivshapes[i] = shapes[index];
+    }
+}
+
+function aktivshapesDraw(){
+    for(let i = 0; i < 3; i++){
+        if(aktivshapes[i] != undefined){
+            aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
+            console.log(aktivshapes[i].Shape)
+        }
+    }
+}
+
 //holder ==> mozgatott objekt
 
-function drop(ev, dragged) {
+function drop(ev, dragged, draggedIndex) {
     if (ev.offsetY < 561){
         let beszinezve = 0;
         let oszlopBeszinezve = 0;
@@ -215,6 +347,7 @@ function drop(ev, dragged) {
         
         //Alakzat hely ellenőrzés
         let coorOffset = dragged.HolFog(ev.offsetX, ev.offsetY);
+        console.log(coorOffset);
         if(droppedX - coorOffset.X >= 0 && droppedY - coorOffset.Y >= 0){
             droppedX -= coorOffset.X;
             droppedY -= coorOffset.Y;
@@ -235,6 +368,7 @@ function drop(ev, dragged) {
                         if(dSpace[bY][bX].Bool){
                             field[droppedY + bY][droppedX + bX] = true;
                             ctx.fillRect((droppedX + bX )*70, (droppedY + bY) * 70, 70, 70);
+                            aktivshapes[draggedIndex] = undefined;
                         }
                     }
                 }   
@@ -372,23 +506,53 @@ function drop(ev, dragged) {
 
 
     //Van-e lehetséges opció
-    if(GameEndCheck(dragged)){
+    GameEndCheck();
+}
+
+function GameEndCheck(){
+    let gameEndDb = GameEndAlakzatCheck();
+    let undefinedDb = UndefinedCheck();
+    if(gameEndDb != 0 && gameEndDb == 3 - undefinedDb){
         alert("Nincs lehetséges lépés")
     }
+    if(undefinedDb == 3){
+        aktivshapesFill();
+        while(GameEndAlakzatCheck() == 3){
+            aktivshapesFill();  //Ha nem játszhatót fillelne először
+        }
+    }
 }
-  
+
+function UndefinedCheck(){
+    let undefinedDb = 0;
+    aktivshapes.forEach(alakzat => {
+        if(alakzat == undefined)
+            undefinedDb++;
+    });
+    return undefinedDb;
+}
+function GameEndAlakzatCheck(){
+    let gameEndDb = 0;
+    aktivshapes.forEach(alakzat => {
+        if(alakzat != undefined)
+            if(!AlakzatLepesCheck(alakzat))
+                gameEndDb++;
+    });
+    return gameEndDb;
+}
+
 /**
  * @param {Alakzat} object 
  */
-function GameEndCheck(object){
+function AlakzatLepesCheck(object){
     for(let y = 0; y < field.length; y++){
         for(let x = 0; x < field[y].length; x++){
             if(BlokkCheck(x, y, object)){
-                return false;     //Van lehetséges lépés
+                return true;     //Van lehetséges lépés
             }
         }
     }
-    return true;       //Nincs lehetséges lépés
+    return false;       //Nincs lehetséges lépés
 }
 
 /**
@@ -397,8 +561,6 @@ function GameEndCheck(object){
 function BlokkCheck(x, y, object){
     for(let bY = 0; bY < object.Space.length; bY++){
         for(let bX = 0; bX < object.Space[bY].length; bX++){
-            // console.log("bX:", bX, "bY", bY)
-            // console.log("xx", x + bX < 8)
             if(y + bY >= 8 || x + bX >= 8){
                 return false;
             }
@@ -415,17 +577,18 @@ function BlokkCheck(x, y, object){
 let kezdoX = 217;
 let kezdoY = 617;
 
-for (let i = 0; i< L.Space.length; i++){
-    for (let j = 0; j < L.Space[i].length; j++){
-        if (L.Space[i][j].Bool == true){
-            ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
-            L.Space[i][j].X = kezdoX + j *70;
-            L.Space[i][j].Y = kezdoY + i * 70;
-        }
-        else{
-            L.Space[i][j].X = kezdoX + j *70;
-            L.Space[i][j].Y = kezdoY + i * 70;
-        }
-    }
+// for (let i = 0; i< L.Space.length; i++){
+//     for (let j = 0; j < L.Space[i].length; j++){
+//         if (L.Space[i][j].Bool == true){
+//             ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
+//             L.Space[i][j].X = kezdoX + j *70;
+//             L.Space[i][j].Y = kezdoY + i * 70;
+//         }
+//         else{
+//             L.Space[i][j].X = kezdoX + j *70;
+//             L.Space[i][j].Y = kezdoY + i * 70;
+//         }
+//     }
 
-}
+// }
+// L.Rajz(kezdoX, kezdoY, ctx2);
