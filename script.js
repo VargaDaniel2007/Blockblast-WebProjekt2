@@ -6,95 +6,110 @@ import {Alakzat, Blokk} from "./alakzat.js"
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const L = new Alakzat([[new Blokk(false),new Blokk(false),new Blokk(true)],
-[new Blokk(true),new Blokk(true),new Blokk(true)]]);
+const L = new Alakzat([[(false),(false),(true)],
+[(true),(true),(true)]]);
 
 
 const shapes = [
-    [[new Blokk(false),new Blokk(false),new Blokk(true)],
-     [new Blokk(true),new Blokk(true),new Blokk(true)]],              //L
+    //L
+    [[(false),(false),(true)],
+    [(true),(true),(true)]],              
     //L állított
-        [[new Blokk(true), new Blokk(false)],
-         [new Blokk(true), new Blokk(false)],
-         [new Blokk(true), new Blokk(true)]],
+        [[(true), (false)],
+         [(true), (false)],
+         [(true), (true)]],
 
     //L tükör
-        [[new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(true), (false), (false)],
+         [(true), (true), (true)]],
     //L tükör állított
-        [[new Blokk(false), new Blokk(true)],
-         [new Blokk(false), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]],
+        [[(false), (true)],
+         [(false), (true)],
+         [(true), (true)]],
 
     //Z
-        [[new Blokk(false), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(false)]],
+        [[(false), (true), (true)],
+         [(true), (true), (false)]],
 
     //Z állított
-        [[new Blokk(true), new Blokk(false)],
-         [new Blokk(true), new Blokk(true)],
-         [new Blokk(false), new Blokk(true)]],
+        [[(true), (false)],
+         [(true), (true)],
+         [(false), (true)]],
 
     //Z tükör
-        [[new Blokk(true), new Blokk(true), new Blokk(false)],
-         [new Blokk(false), new Blokk(true), new Blokk(true)]],
+        [[(true), (true), (false)],
+         [(false), (true), (true)]],
 
     //Z tükör állított
-        [[new Blokk(false), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(false)]],
+        [[(false), (true)],
+         [(true), (true)],
+         [(true), (false)]],
 
     //I
-        [[new Blokk(true)],
-         [new Blokk(true)],
-         [new Blokk(true)]],
+        [[(true)],
+         [(true)],
+         [(true)]],
 
     //I fektetett
-        [[new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(true), (true), (true)]],
 
     //Négyzet
-        [[new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]],
+        [[(true), (true)],
+         [(true), (true)]],
 
     //Nagy négyzet
-        [[new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(true), (true), (true)],
+         [(true), (true), (true)],
+         [(true), (true), (true)]],
 
 
     //Téglalap
-        [[new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(true), (true), (true)],
+         [(true), (true), (true)]],
 
     //Téglalap állított
-        [[new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(true)]],
+        [[(true), (true)],
+         [(true), (true)],
+         [(true), (true)]],
 
 
     //Nagy L
-        [[new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(true), (false), (false)],
+         [(true), (false), (false)],
+         [(true), (true), (true)]],
 
     //Nagy L tükör
-        [[new Blokk(false), new Blokk(false), new Blokk(true)],
-         [new Blokk(false), new Blokk(false), new Blokk(true)],
-         [new Blokk(true), new Blokk(true), new Blokk(true)]],
+        [[(false), (false), (true)],
+         [(false), (false), (true)],
+         [(true), (true), (true)]],
 
     //Nagy L fejjel lefelé
-        [[new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(true), new Blokk(false), new Blokk(false)],
-         [new Blokk(true), new Blokk(false), new Blokk(false)]],
+        [[(true), (true), (true)],
+         [(true), (false), (false)],
+         [(true), (false), (false)]],
 
     //Nagy L fejjel lefelé tükör
-        [[new Blokk(true), new Blokk(true), new Blokk(true)],
-         [new Blokk(false), new Blokk(false), new Blokk(true)],
-         [new Blokk(false), new Blokk(false), new Blokk(true)]]
+        [[(true), (true), (true)],
+         [(false), (false), (true)],
+         [(false), (false), (true)]],
+
+    //T
+        [[(true), (true), (true)],
+         [(false), (true), (false)]],
+    //T balra fordítva
+        [[(true), (false)],
+         [(true), (true)],
+         [(true), (false)]],
+    //T fejjel lefelé
+        [[(false), (true), (false)],
+         [(true), (true), (true)]],
+    //T jobbra fordítva
+        [[(false), (true)],
+         [(true), (true)],
+         [(false), (true)]]
 
 ];
 
-console.log(L)
 const coor = {X: 0, Y: 0,
     setCoor: function(x, y){
         this.X = x,
@@ -105,57 +120,6 @@ const aktivShapeCoor = [new coor.setCoor(10, 585), new coor.setCoor(200, 585), n
 
 const aktivshapes = [undefined, undefined, undefined];
 
-
-
-
-let rectPosX = 50;
-let rectPosY = 50;
-let rectW = 50;
-let rectH = 50;
-let rectOffsetX = 0;
-let rectOffsetY = 0;
-
-
-/*
-canvas.addEventListener('mousedown', (event) => {
-    // console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
-
-    if(event.offsetX > rectPosX && event.offsetX < rectPosX + rectW)
-        if(event.offsetY > rectPosY && event.offsetY < rectPosY + rectH){
-            drag = true;
-            rectOffsetX = event.offsetX - rectPosX;
-            rectOffsetY = event.offsetY - rectPosY;
-        }
-
-});
-canvas.addEventListener('mousemove', (event) => {
-    if(drag){
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillRect(event.offsetX - rectOffsetX, event.offsetY - rectOffsetY, rectW, rectH)
-        rectPosX = event.offsetX - rectOffsetX;
-        rectPosY = event.offsetY - rectOffsetY;
-    }
-});
-
-
-window.addEventListener('mouseup', (event) => {
-    // console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
-
-    drag = false;
-});
-canvas.addEventListener('click', (event) => {
-    console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
-
-// });
-*/
-//ctx.fillStyle = "red";
-//ctx.fillRect(50, 50, 50, 50);
 const ctx2 = document.getElementById('overlay').getContext('2d');
 
 
@@ -163,7 +127,7 @@ window.addEventListener("load", () =>{
     drawChart();
     generate();
     aktivshapesFill();
-    console.log(aktivshapes)
+    // console.log(aktivshapes)
     aktivshapesDraw();
 })
 
@@ -181,22 +145,10 @@ function drawChart(){
 
 
 //game
-
-let wrectPosX = 70;
-let wrectPosY = 70;
-let wrectW = 70;
-let wrectH = 70;
 let dragged = undefined;
-let wrectOffsetX = 0;
-let wrectOffsetY = 0;
-//ctx2.fillRect(wrectPosX, wrectPosY, wrectW, wrectH);
+
 
 document.getElementById('overlay').addEventListener('mousedown', (event) => {
-    // console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
-
-    //Kocka
     for(let i = 0; i < aktivshapes.length; i++){
         const alakzat = aktivshapes[i];
         if(alakzat != undefined){
@@ -217,27 +169,9 @@ document.getElementById('overlay').addEventListener('mousedown', (event) => {
         }
     };
 
-    /*
-    if(event.offsetX > wrectPosX && event.offsetX < wrectPosX + wrectW){
-        if(event.offsetY > wrectPosY && event.offsetY < wrectPosY + wrectH){
-            drag = true;
-            wrectOffsetX = event.offsetX - wrectPosX;
-            wrectOffsetY = event.offsetY - wrectPosY;
-        }
-    }
-    */
-
 });
 document.getElementById('overlay').addEventListener('mousemove', (event) => {
     if(dragged != undefined){
-        /*
-        ctx2.clearRect(0, 0, canvas.width, canvas.height);
-        ctx2.fillRect(event.offsetX - wrectOffsetX, event.offsetY - wrectOffsetY, wrectW, wrectH)
-        wrectPosX = event.offsetX - wrectOffsetX;
-        wrectPosY = event.offsetY - wrectOffsetY;
-        let kezdoX = 217;
-        let kezdoY = 617;
-        */
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         let alakzat = aktivshapes[dragged];
         alakzat.Rajz(event.offsetX -  alakzat.Offset.X, event.offsetY -  alakzat.Offset.Y, ctx2)
@@ -255,8 +189,8 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
                 }
                 // console.log(L.Space[0][2].Y)
             }
+        }
         */
-        // }
         for(let i = 0; i < aktivshapes.length; i++){
             if(i != dragged && aktivshapes[i] != undefined){
                 aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
@@ -270,27 +204,27 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
 
 
 window.addEventListener('mouseup', (event) => {
-    // console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
     if(dragged != undefined){
         let alakzat = aktivshapes[dragged];
-        // alakzat.Offset.X = 0;
-        // alakzat.Offset.Y = 0;
-        drop(event, alakzat, dragged);
-        // aktivshapes[dragged] = undefined;
+        if(drop(event, alakzat)){
+            aktivshapes[dragged] = undefined;
+        }
         dragged = undefined;
+
+        GameEndCheck();
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         aktivshapesDraw();
     }
 
 });
+/*
 document.getElementById('overlay').addEventListener('click', (event) => {
-    //console.log(event)
-    // console.log(event.offsetX);
-    // console.log(event.offsetY);
+    console.log(event)
+    console.log(event.offsetX);
+    console.log(event.offsetY);
 
 });
+*/
 
 let field = [
     [],
@@ -315,7 +249,7 @@ function generate(){
 function aktivshapesFill(){
     for(let i = 0; i < 3; i++){
         let index = Math.floor(Math.random() * shapes.length);
-        aktivshapes[i] = new Alakzat(shapes[1]);
+        aktivshapes[i] = new Alakzat(shapes[index]);
     }
 }
 
@@ -323,14 +257,13 @@ function aktivshapesDraw(){
     for(let i = 0; i < 3; i++){
         if(aktivshapes[i] != undefined){
             aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
-            console.log(aktivshapes[i].Shape)
         }
     }
 }
 
 //holder ==> mozgatott objekt
 
-function drop(ev, dragged, draggedIndex) {
+function drop(ev, dragged) {
     if (ev.offsetY < 561){
         let beszinezve = 0;
         let oszlopBeszinezve = 0;
@@ -339,16 +272,16 @@ function drop(ev, dragged, draggedIndex) {
 
         let droppedX = Math.floor(ev.offsetX /70);
         let droppedY = Math.floor(ev.offsetY /70);
-        // console.log(droppedX, droppedY);
+        console.log(droppedX, droppedY);
         //field[droppedY][droppedX] = true;
         
         //Alakzat hely ellenőrzés
         let coorOffset = dragged.HolFog(ev.offsetX, ev.offsetY);
-        console.log(coorOffset);
-        if(coorOffset == null){
-            coorOffset = {X: 0, Y: 0};
-        }
-        if(droppedX - coorOffset.X >= 0 && droppedY - coorOffset.Y >= 0){
+        ctx.fillStyle = "black"
+
+        if((droppedX - coorOffset.X >= 0 && droppedX - coorOffset.X + (dragged.Space[0].length - 1) < 8) &&
+            (droppedY - coorOffset.Y >= 0 && droppedY - coorOffset.Y + (dragged.Space.length - 1) < 8)){
+
             droppedX -= coorOffset.X;
             droppedY -= coorOffset.Y;
 
@@ -368,21 +301,13 @@ function drop(ev, dragged, draggedIndex) {
                         if(dSpace[bY][bX].Bool){
                             field[droppedY + bY][droppedX + bX] = true;
                             ctx.fillRect((droppedX + bX )*70, (droppedY + bY) * 70, 70, 70);
-                            aktivshapes[draggedIndex] = undefined;
                         }
                     }
                 }   
             }
-        }
-
-
-
-
-        ctx.fillStyle = "black"
-        //ctx.fillRect(droppedX *70, droppedY * 70, 70, 70);
-
-        //console.log(field)
-
+            else{
+                return false
+            }
 
         for(let i = 0; i < 8; i++){
             for (let j = 0; j < 8; j++){
@@ -502,11 +427,11 @@ function drop(ev, dragged, draggedIndex) {
             }
         }
         */
+        return true;
+        }
     }
 
 
-    //Van-e lehetséges opció
-    GameEndCheck();
 }
 
 function GameEndCheck(){
@@ -576,19 +501,19 @@ function BlokkCheck(x, y, object){
 
 let kezdoX = 217;
 let kezdoY = 617;
-
-// for (let i = 0; i< L.Space.length; i++){
-//     for (let j = 0; j < L.Space[i].length; j++){
-//         if (L.Space[i][j].Bool == true){
-//             ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
-//             L.Space[i][j].X = kezdoX + j *70;
-//             L.Space[i][j].Y = kezdoY + i * 70;
-//         }
-//         else{
-//             L.Space[i][j].X = kezdoX + j *70;
-//             L.Space[i][j].Y = kezdoY + i * 70;
-//         }
-//     }
-
-// }
-// L.Rajz(kezdoX, kezdoY, ctx2);
+/*
+for (let i = 0; i< L.Space.length; i++){
+    for (let j = 0; j < L.Space[i].length; j++){
+        if (L.Space[i][j].Bool == true){
+            ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
+            L.Space[i][j].X = kezdoX + j *70;
+            L.Space[i][j].Y = kezdoY + i * 70;
+        }
+        else{
+            L.Space[i][j].X = kezdoX + j *70;
+            L.Space[i][j].Y = kezdoY + i * 70;
+        }
+    }
+}
+L.Rajz(kezdoX, kezdoY, ctx2);
+*/

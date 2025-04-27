@@ -5,8 +5,16 @@ export class Alakzat{
 
      */
     constructor(space) {
-        this.Space = space;
+        this.Space = [];
+        for(let bY = 0; bY < space.length; bY++){
+            this.Space.push([]);
+            for(let bX = 0; bX < space[bY].length; bX++){
+                this.Space[bY].push(new Blokk(space[bY][bX]));
+            }
+        }
+        
         this.Offset = {X: 0, Y: 0};
+
     }
 
     HolFog(offsetX, offsetY){
@@ -21,6 +29,7 @@ export class Alakzat{
                 }
             }
         }
+        // console.log(this.Space[0][0].X)
         return null;
     }
 
@@ -39,6 +48,7 @@ export class Alakzat{
             }
         
         }
+        // console.log(this.Space[0][0].X)
     }
 }
 
