@@ -1,8 +1,11 @@
 import {Alakzat, Blokk} from "./alakzat.js"
 
 
+
 //grid
 
+let endofgame = false;
+let pontszam = 0;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -110,13 +113,20 @@ const shapes = [
 
 ];
 
-const coor = {X: 0, Y: 0,
-    setCoor: function(x, y){
+const coor = {X: 0, Y: 0, Color: "",
+    setCoor: function(x, y, color){
         this.X = x,
-        this.Y = y
+        this.Y = y,
+        this.Color = color
+
 }};
 
-const aktivShapeCoor = [new coor.setCoor(10, 585), new coor.setCoor(200, 585), new coor.setCoor(500, 585)]; //TODO: Megoldás a kicsúszásra
+let colors = ["black", "red", "green", "blue", "yellow", "brown", "pink", "orange", "purple"]
+
+
+const aktivShapeCoor = [new coor.setCoor(580, 200, ""), new coor.setCoor(830, 200, ""), new coor.setCoor(1070, 200,"")]; //TODO: Megoldás a kicsúszásra
+
+
 
 const aktivshapes = [undefined, undefined, undefined];
 
@@ -124,19 +134,20 @@ const ctx2 = document.getElementById('overlay').getContext('2d');
 
 
 window.addEventListener("load", () =>{
+    let legjobb = Number(sessionStorage.getItem("legjobb_pont")) || 0;
+    document.getElementById("bestpontszam").innerHTML = legjobb;
     drawChart();
     generate();
     aktivshapesFill();
-    // console.log(aktivshapes)
     aktivshapesDraw();
 })
 
 
 
 function drawChart(){
-    let width = canvas.width;
-    for (let i = 0; i * 70 < width; i++){
-        for (let k= 0; k < width; k++){
+    let height = canvas.height;
+    for (let i = 0; i * 70 < height; i++){
+        for (let k= 0; k < 8; k++){
             ctx.rect(k *70, i*70, 70, 70);
         }
     }
@@ -149,51 +160,39 @@ let dragged = undefined;
 
 
 document.getElementById('overlay').addEventListener('mousedown', (event) => {
-    for(let i = 0; i < aktivshapes.length; i++){
-        const alakzat = aktivshapes[i];
-        if(alakzat != undefined){
-            alakzat.Space.forEach(row => {
-                row.forEach(blokk =>{
-                    if (blokk.Bool == true){
-                        if (blokk.X < event.offsetX && blokk.X + 70 > event.offsetX){
-                            if (blokk.Y < event.offsetY && blokk.Y + 70 > event.offsetY){
-                                dragged = i;
-                                alakzat.Offset.X = event.offsetX - alakzat.Space[0][0].X;
-                                alakzat.Offset.Y = event.offsetY - alakzat.Space[0][0].Y;
-                                // console.log(L.Space[0][0].X)
+    if (!endofgame){
+        for(let i = 0; i < aktivshapes.length; i++){
+            const alakzat = aktivshapes[i];
+            if(alakzat != undefined){
+                alakzat.Space.forEach(row => {
+                    row.forEach(blokk =>{
+                        if (blokk.Bool == true){
+                            if (blokk.X < event.offsetX && blokk.X + 70 > event.offsetX){
+                                if (blokk.Y < event.offsetY && blokk.Y + 70 > event.offsetY){
+                                    dragged = i;
+                                    alakzat.Offset.X = event.offsetX - alakzat.Space[0][0].X;
+                                    alakzat.Offset.Y = event.offsetY - alakzat.Space[0][0].Y;
+                                    // console.log(L.Space[0][0].X)
+                                }
                             }
                         }
-                    }
-                })
-            });
-        }
-    };
+                    })
+                });
+            }
+        };
+
+    }
 
 });
+
 document.getElementById('overlay').addEventListener('mousemove', (event) => {
     if(dragged != undefined){
         ctx2.clearRect(0, 0, canvas.width, canvas.height);
         let alakzat = aktivshapes[dragged];
-        alakzat.Rajz(event.offsetX -  alakzat.Offset.X, event.offsetY -  alakzat.Offset.Y, ctx2)
-        /*
-        for (let i = 0; i< alakzat.Space.length; i++){
-            for (let j = 0; j < alakzat.Space[i].length; j++){
-                if (alakzat.Space[i][j].Bool == true){
-                    ctx2.fillRect( event.offsetX -  alakzat.Offset.X + j*70, event.offsetY - alakzat.Offset.Y + i * 70, 70, 70)
-                    alakzat.Space[i][j].X = event.offsetX -  alakzat.Offset.X + j *70;
-                    alakzat.Space[i][j].Y = event.offsetY - alakzat.Offset.Y + i * 70;
-                }
-                else{
-                    alakzat.Space[i][j].X = event.offsetX -  alakzat.Offset.X + j *70;
-                    alakzat.Space[i][j].Y = event.offsetY - alakzat.Offset.Y + i * 70;
-                }
-                // console.log(L.Space[0][2].Y)
-            }
-        }
-        */
+        alakzat.Rajz(event.offsetX -  alakzat.Offset.X, event.offsetY -  alakzat.Offset.Y, ctx2, aktivShapeCoor[dragged].Color)
         for(let i = 0; i < aktivshapes.length; i++){
             if(i != dragged && aktivshapes[i] != undefined){
-                aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
+                aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2, aktivShapeCoor[i].Color);
             }
         }
 
@@ -206,7 +205,7 @@ document.getElementById('overlay').addEventListener('mousemove', (event) => {
 window.addEventListener('mouseup', (event) => {
     if(dragged != undefined){
         let alakzat = aktivshapes[dragged];
-        if(drop(event, alakzat)){
+        if(drop(event, alakzat, dragged)){
             aktivshapes[dragged] = undefined;
         }
         dragged = undefined;
@@ -217,14 +216,6 @@ window.addEventListener('mouseup', (event) => {
     }
 
 });
-/*
-document.getElementById('overlay').addEventListener('click', (event) => {
-    console.log(event)
-    console.log(event.offsetX);
-    console.log(event.offsetY);
-
-});
-*/
 
 let field = [
     [],
@@ -251,19 +242,23 @@ function aktivshapesFill(){
         let index = Math.floor(Math.random() * shapes.length);
         aktivshapes[i] = new Alakzat(shapes[index]);
     }
+    for (let i = 0; i< aktivShapeCoor.length; i ++){
+        let index = Math.floor(Math.random() * colors.length);
+        aktivShapeCoor[i].Color = colors[index];
+    }
 }
 
 function aktivshapesDraw(){
     for(let i = 0; i < 3; i++){
         if(aktivshapes[i] != undefined){
-            aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2);
+            aktivshapes[i].Rajz(aktivShapeCoor[i].X, aktivShapeCoor[i].Y, ctx2, aktivShapeCoor[i].Color);
         }
     }
 }
 
 //holder ==> mozgatott objekt
 
-function drop(ev, dragged) {
+function drop(ev, dragged, dindex) {
     if (ev.offsetY < 561){
         let beszinezve = 0;
         let oszlopBeszinezve = 0;
@@ -272,7 +267,6 @@ function drop(ev, dragged) {
 
         let droppedX = Math.floor(ev.offsetX /70);
         let droppedY = Math.floor(ev.offsetY /70);
-        console.log(droppedX, droppedY);
         //field[droppedY][droppedX] = true;
         
         //Alakzat hely ellenőrzés
@@ -300,7 +294,12 @@ function drop(ev, dragged) {
                     for(let bX = 0; bX < dSpace[bY].length; bX++){
                         if(dSpace[bY][bX].Bool){
                             field[droppedY + bY][droppedX + bX] = true;
+                            ctx.fillStyle = aktivShapeCoor[dindex].Color;
                             ctx.fillRect((droppedX + bX )*70, (droppedY + bY) * 70, 70, 70);
+                            ctx.beginPath();
+                            ctx.rect((droppedX + bX )*70, (droppedY + bY) * 70, 70, 70);
+                            ctx.stroke();
+                            pontszam++;
                         }
                     }
                 }   
@@ -336,97 +335,46 @@ function drop(ev, dragged) {
         
         //console.log(oszlop)
         //törlés
-        for (let i = 0; i < index.length; i++){
-            ctx.clearRect(0, index[i]*70, canvas.width, 70);
-            for (let k= 0; k * 70 < canvas.width; k++){
-                console.log("szexpéter")
-                ctx.rect(k *70, i*70, 70, 70);
-                field[index[i]][k] = false;
 
+        //sor
+        for (let i = 0; i < index.length; i++){
+            ctx.clearRect(0, index[i]*70, canvas.height, 70);
+            for (let k= 0; k * 70 < canvas.height; k++){
+                console.log("szexpéter")
+                ctx.rect(k *70, index[i]*70, 70, 70);
+                field[index[i]][k] = false;
             }
             ctx.stroke();
+            pontszam += 50;
             
         }
         index = [];
 
+
+
+
+        //oszlop
         for (let i = 0; i < oszlop.length; i++){
             ctx.clearRect(oszlop[i]*70, 0, 70, canvas.height);
             for (let m = 0; m < 8; m++){
                 console.log("csaba")
-                ctx.rect(i * 70, m *70, 70, 70);
+                ctx.rect(oszlop[i] * 70, m *70, 70, 70);
                 field[m][oszlop[i]] = false;
             }
             ctx.stroke();
+            pontszam += 50;
 
         }
         oszlop = [];
     
+
+        document.getElementById("pontszam").innerText = pontszam;
     
-        
-        /*
-        if (parseInt(holder.id) > -1){
-            ev.preventDefault();
-            //console.log(holder.id)
-            //hol van
-            field[parseInt(holder.id / 8)][(parseFloat(holder.id / 8) - parseInt(holder.id / 8)) * 8] = true;
-    
-            //pont-e?
-            let beszinezve = 0;
-            let index = [];
-            let oszlopBeszinezve = 0;
-            let oszlop = [];
-            for(let i = 0; i < 8; i++){
-                for (let j = 0; j < 8; j++){
-                    if (field[i][j] == true){
-                        ++beszinezve;
-                    }
-    
-                }
-                if (beszinezve == 8){
-                    index.push(i);
-                }
-                beszinezve = 0;
-    
-                for (let k = 0; k < 8; k++){
-                    if (field[k][i] == true){
-                        ++oszlopBeszinezve;
-                    }
-                }
-                if (oszlopBeszinezve == 8){
-                    oszlop.push(i);
-                }
-                oszlopBeszinezve = 0;
-            }
-            for (let k = 0; k < index.length; k++){
-                let id = 0;
-                for (let m = 0; m < 8; m++){
-                    //visszafejteni id-re, 0,125-el nő
-                    document.getElementById(index[k] * 8 + id * 8).innerHTML = "";
-                    field[index[k]][id * 8] = false;
-                    id += 0.125
-                }
-            }
-    
-            for (let k = 0; k < oszlop.length; k++){
-                let id = oszlop[k];
-                for (let m = 0; m < 8; m++){
-                    //visszafejteni id-re, 0,125-el nő
-                    document.getElementById(id).innerHTML = "";
-                    field[m][id] = false;
-                    id += 8
-                }
-            }
-            index = [];
-        
-        
-        
-            //új generálása
-            if (selection.innerHTML.trim() == ''){
-                for (let i = 0; i < 3; i++){
-                }
-            }
+        if (Number(sessionStorage.getItem("legjobb_pont")) < pontszam){
+            document.getElementById("bestpontszam").innerHTML = pontszam;
         }
-        */
+        
+
         return true;
         }
     }
@@ -438,12 +386,18 @@ function GameEndCheck(){
     let gameEndDb = GameEndAlakzatCheck();
     let undefinedDb = UndefinedCheck();
     if(gameEndDb != 0 && gameEndDb == 3 - undefinedDb){
-        alert("Nincs lehetséges lépés")
+        EndOfGame()
     }
     if(undefinedDb == 3){
         aktivshapesFill();
-        while(GameEndAlakzatCheck() == 3){
+        let db = 0;
+
+        while(db < 3 && GameEndAlakzatCheck() == 3){
             aktivshapesFill();  //Ha nem játszhatót fillelne először
+            db++
+        }
+        if (db >= 3){
+            EndOfGame()
         }
     }
 }
@@ -499,21 +453,20 @@ function BlokkCheck(x, y, object){
     return true;
 }
 
-let kezdoX = 217;
-let kezdoY = 617;
-/*
-for (let i = 0; i< L.Space.length; i++){
-    for (let j = 0; j < L.Space[i].length; j++){
-        if (L.Space[i][j].Bool == true){
-            ctx2.fillRect( kezdoX + j*70, kezdoY + i * 70, 70, 70);
-            L.Space[i][j].X = kezdoX + j *70;
-            L.Space[i][j].Y = kezdoY + i * 70;
-        }
-        else{
-            L.Space[i][j].X = kezdoX + j *70;
-            L.Space[i][j].Y = kezdoY + i * 70;
-        }
+
+function EndOfGame(){
+    document.getElementById('restart').style.display = "block";
+    document.getElementById('gameover').style.display = "block";
+    endofgame = true;
+    let legjobb = Number(sessionStorage.getItem("legjobb_pont")) || 0;
+    if (pontszam > legjobb){
+        sessionStorage.setItem("legjobb_pont", `${pontszam}`)
+
     }
+
+    document.getElementById('restart').addEventListener("click",  () => {
+        pontszam = 0;
+        document.getElementById("pontszam").innerText = pontszam;
+        location.reload();
+    })
 }
-L.Rajz(kezdoX, kezdoY, ctx2);
-*/

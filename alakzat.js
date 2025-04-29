@@ -1,4 +1,5 @@
 export class Alakzat{
+
     /**
         mátrix[true, false]
 
@@ -33,20 +34,27 @@ export class Alakzat{
         return null;
     }
 
-    Rajz(x, y, ctx){
+    Rajz(x, y, ctx, color){
+
         for (let bY = 0; bY< this.Space.length; bY++){
             for (let bX = 0; bX < this.Space[bY].length; bX++){
                 if (this.Space[bY][bX].Bool == true){
+                    ctx.fillStyle = color;
                     ctx.fillRect( x + bX*70, y + bY * 70, 70, 70);
+                    ctx.beginPath();
+                    ctx.rect(x + bX*70, y + bY * 70, 70, 70);
+                    ctx.stroke();
+                    //ez jó, ehhez nem nyúlúnk
                     this.Space[bY][bX].X = x + bX *70;
                     this.Space[bY][bX].Y = y + bY * 70;
                 }
                 else{
+                    //ez jó, ehhez nem nyúlúnk
                     this.Space[bY][bX].X = x + bX *70;
                     this.Space[bY][bX].Y = y + bY * 70;
                 }
             }
-        
+            
         }
         // console.log(this.Space[0][0].X)
     }
