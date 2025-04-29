@@ -121,7 +121,7 @@ const coor = {X: 0, Y: 0, Color: "",
 
 }};
 
-let colors = ["black", "red", "green", "blue", "yellow", "brown", "pink", "orange", "purple"]
+let colors = ["red", "green", "blue", "yellow", "brown", "pink", "orange", "purple"]
 
 
 const aktivShapeCoor = [new coor.setCoor(580, 200, ""), new coor.setCoor(830, 200, ""), new coor.setCoor(1070, 200,"")]; //TODO: Megoldás a kicsúszásra
